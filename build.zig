@@ -69,7 +69,7 @@ const qemu_command_str = &.
     "-kernel", "zig-cache/riscv",
     "-serial", "mon:stdio",
     "-drive", "if=none,format=raw,file=zig-cache/hdd.bin,id=foo",
-    "-device", "virtio-blk-device,scsi=off,drive=foo",
+    "-device", "virtio-blk-device,drive=foo",
 };
  
 fn qemu_command(b: *Builder) *std.build.RunStep
