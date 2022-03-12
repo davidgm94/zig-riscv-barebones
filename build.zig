@@ -5,6 +5,7 @@ pub fn build(b: *Builder) void
 {
     var enabled_features = std.Target.Cpu.Feature.Set.empty;
     const features = std.Target.riscv.Feature;
+    enabled_features.addFeature(@enumToInt(features.c));
     const target = std.zig.CrossTarget
     {
         .cpu_arch = .riscv64,
@@ -13,7 +14,6 @@ pub fn build(b: *Builder) void
         .cpu_features_add = enabled_features,
     };
 
-    enabled_features.addFeature(@enumToInt(features.c));
 
     const exe = b.addExecutable("riscv", "src/main.zig");
     exe.force_pic = true;
@@ -65,11 +65,12 @@ const qemu_command_str = &.
     "-cpu", "rv64",
     "-smp", "4",
     "-m", "128M",
-    "-bios", "none",
+    "-bios", "default",
     "-kernel", "zig-cache/riscv",
     "-serial", "mon:stdio",
     "-drive", "if=none,format=raw,file=zig-cache/hdd.bin,id=foo",
     "-device", "virtio-blk-device,drive=foo",
+    // "-d", "in_asm,guest_errors,int",
 };
  
 fn qemu_command(b: *Builder) *std.build.RunStep

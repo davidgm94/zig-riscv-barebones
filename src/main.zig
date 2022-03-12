@@ -1,19 +1,12 @@
-const std = @import("std");
-export fn main() callconv(.C) noreturn
+export fn main(hart_id: u64, fdt_address: u64) callconv(.C) noreturn
 {
+    _ = hart_id;
+    _ = fdt_address;
+
     log_uart.init();
     log_uart.write("Hello kernel\n");
 
-    while (true)
-    {
-        std.atomic.spinLoopHint();
-    }
-}
-
-export fn asm_trap_vector() callconv(.Naked) void
-{
-    asm volatile("mret");
-    unreachable;
+    while (true) { }
 }
 
 const log_uart = UART(0x1000_0000);
